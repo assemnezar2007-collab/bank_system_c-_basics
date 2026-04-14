@@ -1,0 +1,127 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class bankaccount {
+private:
+    string ownername;
+    double balance;
+    string pincode;
+
+    bool verify_pin() {
+        string enterpin;
+        cout << "Enter your PIN code: ";
+        cin >> enterpin;
+
+        if (enterpin == pincode) {
+            cout << "PIN verified successfully\n";
+            return true;
+        }
+        else {
+            cout << "Incorrect PIN\n";
+            return false;
+        }
+    }
+
+public:
+    // Constructor
+    bankaccount() {
+        balance = 0.0;
+    }
+
+    void createaccount() {
+        cout << "Enter your name: ";
+        cin.ignore();
+        getline(cin, ownername);
+
+        cout << "Set your 4-digit PIN: ";
+        cin >> pincode;
+
+        if (pincode.length() != 4) {
+            cout << "Invalid PIN! Must be 4 digits\n";
+        }
+    }
+
+    void deposit() {
+        if (!verify_pin()) return;
+
+        double amount;
+        cout << "Enter amount to deposit: ";
+        cin >> amount;
+
+        if (amount <= 0) {
+            cout << "Invalid amount\n";
+            return;
+        }
+
+        balance += amount;
+        cout << "Deposited " << amount << " successfully\n";
+    }
+
+    void withdraw() {
+        if (!verify_pin()) return;
+
+        double amount;
+        cout << "Enter amount to withdraw: ";
+        cin >> amount;
+
+        if (amount > balance) {
+            cout << "Not enough balance\n";
+        }
+        else if (amount <= 0) {
+            cout << "Invalid amount\n";
+        }
+        else {
+            balance -= amount;
+            cout << "Withdrawn " << amount << " successfully\n";
+        }
+    }
+
+    void displayaccount() {
+        if (!verify_pin()) return;
+
+        cout << "\n--- Account Info ---\n";
+        cout << "Name: " << ownername << endl;
+        cout << "Balance: " << balance << endl;
+    }
+};
+
+int main() {
+    cout << "Welcome to C++ Bank System\n";
+    cout << "--------------------------\n";
+
+    bankaccount acc;   
+    acc.createaccount();
+
+    int choice;
+
+    do {
+        cout << "\n------ Operations ------\n";
+        cout << "1. Deposit\n";
+        cout << "2. Withdraw\n";
+        cout << "3. Display Account Info\n";
+        cout << "4. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            acc.deposit();
+            break;
+        case 2:
+            acc.withdraw();
+            break;
+        case 3:
+            acc.displayaccount();
+            break;
+        case 4:
+            cout << "Program ended\n";
+            break;
+        default:
+            cout << "Invalid choice\n";
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
